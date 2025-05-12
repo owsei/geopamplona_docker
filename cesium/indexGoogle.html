@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <!-- Include the CesiumJS JavaScript and CSS files -->
+  <script src="https://cesium.com/downloads/cesiumjs/releases/1.129/Build/Cesium/Cesium.js"></script>
+  <link href="https://cesium.com/downloads/cesiumjs/releases/1.129/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+</head>
+<body>
+  <div id="cesiumContainer"></div>
+  <script type="module">
+    // Your access token can be found at: https://ion.cesium.com/tokens.
+    // This is the default access token from your ion account
+
+    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3YWQ3ZWY4ZS03NzBjLTRjNzktYTYyNy0zMTRkYmE1NmE1NDciLCJpZCI6MjgwODk3LCJpYXQiOjE3NDEwNzIzMzl9.rpQ6pVt0APCbZ_zhTJkhquCVXwmMo3unuk4ZafCea-k';
+
+    const viewer = new Cesium.Viewer("cesiumContainer", {
+        globe: false,
+        geocoder: Cesium.IonGeocodeProviderType.GOOGLE,
+    })
+
+    try {
+        const tileset = await Cesium.createGooglePhotorealistic3DTileset();
+        viewer.scene.primitives.add(tileset);
+    } catch (error) {
+        console.log(`Failed to load tileset: ${error}`);
+    }
+
+    // Add a Cesium OSM Buildings layer to the scene.
+    // const osmBuildings = await Cesium.createOsmBuildingsAsync();
+    // viewer.scene.primitives.add(osmBuildings);
+
+    // Set the camera to a specific location and orientation.
+    viewer.camera.flyTo({
+        destination: Cesium.Cartesian3.fromDegrees(-1.6456,42.8125, 7000),
+        // orientation: {
+        //     heading: Cesium.Math.toRadians(25.0),
+        //     pitch: Cesium.Math.toRadians(-30.0),
+        // }
+    });
+
+
+
+
+  </script>
+ </div>
+</body>
+</html>
