@@ -1,0 +1,14 @@
+  const geoServerLayer = new TileLayer({
+      source: new TileWMS({
+        url: 'http://localhost:8081/geoserver/geopamplona/wms',
+        params: {
+          'LAYERS': 'geopamplona:movi_pol_zonaaccesorestr',  // <-- Cambia "my_layer" por el nombre de tu capa
+          'TILED': true,
+        },
+        serverType: 'geoserver',
+        crossOrigin: 'anonymous',
+      }),
+    });
+
+
+    -1.643, 42.8168
