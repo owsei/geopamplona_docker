@@ -1,0 +1,16 @@
+# Usa la imagen oficial de Tomcat
+FROM tomcat:9.0
+# Elimina el contenido por defecto de ROOT
+RUN rm -rf /usr/local/tomcat/webapps/ROOT/*
+# Copia el index.html a la aplicación ROOT de Tomcat
+COPY index.html /usr/local/tomcat/webapps/ROOT/index.html
+COPY geoserver.war /usr/local/tomcat/webapps/geoserver.war
+COPY web.xml /usr/local/tomcat/conf/web.xml
+
+
+ENV CATALINA_OPTS="-Xms512m -Xmx2048m"
+
+# Expone el puerto 8080
+EXPOSE 8080
+# Ejecuta Tomcat explícitamente
+CMD ["catalina.sh", "run"]

@@ -41,6 +41,10 @@
                   <li onclick="cargarGeoJSON('./datos/MOVI_Pol_ZonaAccesoRestr.json')">🌎 Zona Acceso restringido</li>
                   <li onclick="cargarGeoJSON('./datos/AMBI_Pto_Compost.json')">🌎 Puntos de Compost</li>
                   <li onclick="cargarGeoJSON('./datos/BIEN_Pol_UnidBarrio.json')">Barrios</li>
+                  
+                  <li onclick="layerWorld('ne:world')">🌎 Capa mundo</li>
+                  <li onclick="layerWorld('ne:boundary_lines')">🌎 Paises Bordes </li>
+                  <li onclick="layerWorld('ne:coastlines')">🌎 Costas </li>
               </ul>
           </li>
         </ul>
@@ -100,6 +104,26 @@
     //   L.marker([42.812,-1.6456]).addTo(map)
     //     .bindPopup("¡Hola desde Pamplona!")
     //     .openPopup();
+
+    // Cesium.GeoJsonDataSource.load('http://localhost:8080/geoserver/ne/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=ne%3Apopulated_places&outputFormat=application%2Fjson&maxFeatures=50')
+    // .then(function (dataSource) {
+    //     viewer.dataSources.add(dataSource);
+    //     viewer.zoomTo(dataSource);
+    // });
+
+
+    const geoserverLayer = viewer.imageryLayers.addImageryProvider(new Cesium.WebMapServiceImageryProvider({
+      url: 'http://localhost:8080/geoserver/ne/wms',
+      layers: 'ne:world',
+      parameters: {
+        service: 'WMS',
+        transparent: true,
+        format: 'image/png'
+
+      },
+      credit: 'GeoServer - world'
+    }));
+
     </script>
 
 </body>

@@ -179,6 +179,7 @@ function crearPunto(datosPunto) {
   function limpiarEntidades() {
     // Limpiar todas las entidades del visor
     viewer.entities.removeAll();
+    viewer.imageryLayers.removeAll();
   }
 
   function puntoPamplona() {
@@ -190,6 +191,20 @@ function crearPunto(datosPunto) {
         //     roll: 0.0
         // }
       });
+  }
+
+  function layerWorld(wms_name) {
+    viewer.imageryLayers.addImageryProvider(new Cesium.WebMapServiceImageryProvider({
+      url: 'http://localhost:8080/geoserver/ne/wms',
+      layers: wms_name,
+      parameters: {
+        service: 'WMS',
+        transparent: true,
+        format: 'image/png'
+
+      },
+      credit: 'GeoServer - world'
+    }));
   }
 
   // FUNCION PARA ABRIR O CERRAR UN SUBÁRBOL EN EL MENÚ LATERAL
