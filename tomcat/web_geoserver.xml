@@ -1,0 +1,26 @@
+<Configure class="org.eclipse.jetty.server.handler.ContextHandler">
+  <Call name="addFilter">
+    <Arg>org.eclipse.jetty.servlets.CrossOriginFilter</Arg>
+    <Arg>"/*"</Arg>
+    <Arg>
+      <New class="org.eclipse.jetty.servlet.FilterHolder">
+        <Set name="initParameters">
+          <Map>
+            <Entry>
+              <Item>allowedOrigins</Item>
+              <Item>*</Item>
+            </Entry>
+            <Entry>
+              <Item>allowedMethods</Item>
+              <Item>GET,POST,PUT,DELETE,OPTIONS</Item>
+            </Entry>
+            <Entry>
+              <Item>allowedHeaders</Item>
+              <Item>Content-Type,Authorization,X-Requested-With</Item>
+            </Entry>
+          </Map>
+        </Set>
+      </New>
+    </Arg>
+  </Call>
+</Configure>
