@@ -185,10 +185,6 @@ function crearPunto(datosPunto) {
               console.log('Es una multilínea');
               crearMultilinea(entidades[i]);
               break;
-
-
-              
-              break;
             default:
               console.log('Tipo de geometría no soportado');
           }
