@@ -13,11 +13,12 @@ def get_geojson_from_table(table_name: str) -> Optional[dict]:
             json_build_object(
                 'type', 'Feature',
                 'geometry', ST_AsGeoJSON(ST_Transform(ST_SetSRID(geom, 25830), 4326))::json,
-                'properties', to_jsonb(t) - 'geom'
+                'properties', to_jsonb(t) - 'geom'|| jsonb_build_object('temperatura', sc.temperatura)
             )
         )
     ) AS geojson
-    from {table_name} t;"""
+    from {table_name} t
+    inner join orion.sensores_calidad sc on sc.idsensor = t.gid;"""
     print(query)
     result = dbQuerys.select(query)
     if result and result[0]:
@@ -27,7 +28,7 @@ def get_geojson_from_table(table_name: str) -> Optional[dict]:
     
 # Endpoint para obtener tablas de la base de datos
 def get_tables_geopamplona() -> Optional[list]:
-    query="SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'AND table_type = 'BASE TABLE'"
+    query="SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_type = 'BASE TABLE'"
     print(query)
     result = dbQuerys.selectAll(query)
     return result

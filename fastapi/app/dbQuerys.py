@@ -21,7 +21,6 @@ def select(query: str) -> Optional[tuple]:
     
 def selectAll(query: str) -> Optional[tuple]:
     try:
-        print("llego aqui")
         conn = psycopg2.connect(**dbConfig.DB_CONFIG)
         with conn.cursor() as cur:
             cur.execute(query)

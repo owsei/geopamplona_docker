@@ -56,23 +56,8 @@ services:
     networks:
       - geopamplona_net
 
-
-  # geoserver:
-  #   hostname: geoserver
-  #   container_name: geoserver
-  #   build:
-  #     context: .
-  #     dockerfile: dockerfile_geoserver
-  #   ports:
-  #     - "8080:8080"
-  #   volumes:
-  #     - ./tomcat/geoserver.war:/usr/local/tomcat/webapps/geoserver.war
-  #   networks:
-  #     - geopamplona_net
-    
 volumes:
   postgres_data:
-  # geoserver_data:
 
 networks:
   geopamplona_net:

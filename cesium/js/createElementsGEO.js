@@ -1,6 +1,22 @@
 const url = "http://localhost:8000";
 //   FUNCIONES DE CREACION DE ENTIDADES EN EL MAPA
 
+function getColorForTemperature(temp) {
+  if (temp <= 0) {
+    return Cesium.Color.BLUE.withAlpha(0.5);
+  } else if (temp <= 15) {
+    return Cesium.Color.CYAN.withAlpha(0.5);
+  } else if (temp <= 25) {
+    return Cesium.Color.GREEN.withAlpha(0.5);
+  } else if (temp <= 35) {
+    return Cesium.Color.YELLOW.withAlpha(0.5);
+  } else {
+    return Cesium.Color.RED.withAlpha(0.5);
+  }
+}
+
+
+
 function crearPunto(datosPunto) {
     const coordenadas = datosPunto.geometry.coordinates;
     const [lon, lat] = coordenadas;
@@ -9,6 +25,7 @@ function crearPunto(datosPunto) {
 
     viewer.entities.add({
       position: Cesium.Cartesian3.fromDegrees(lon, lat, 0), // Altura 0 para el terreno
+      name: datosPunto.properties.direccion || 'Sin dirección',
       point: {
         pixelSize: 8,
         color: Cesium.Color.YELLOW,
@@ -16,18 +33,20 @@ function crearPunto(datosPunto) {
         outlineWidth: 2,
         heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND, // Úsalo si el punto está en terreno
         disableDepthTestDistance: Number.POSITIVE_INFINITY // Siempre visible encima del terreno
-      },
-      // label: {
-      //   text: datosPunto.properties.DIRECCION || 'Sin dirección',
-      //   font: '18pt sans-serif',
-      //   style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-      //   outlineWidth: 2,
-      //   verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-      //   pixelOffset: new Cesium.Cartesian2(0, -12),
-      //   heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND, // Úsalo si el punto está en terreno
-      //   disableDepthTestDistance: Number.POSITIVE_INFINITY // Siempre visible encima del terreno
-      // }
+      }
     });
+    
+    console.log('Altura: '+Cesium.HeightReference.RELATIVE_TO_GROUND);
+    viewer.entities.add({
+      position: Cesium.Cartesian3.fromDegrees(lon, lat, 0),
+      ellipsoid: {
+        radii: new Cesium.Cartesian3(500.0, 500.0, 500),
+        material: getColorForTemperature(datosPunto.properties.temperatura),
+        heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND  ,
+        // disableDepthTestDistance: Number.POSITIVE_INFINITY 
+      }
+    });
+
   }
 
 
