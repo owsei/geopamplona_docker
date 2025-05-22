@@ -41,10 +41,22 @@
                   <li onclick="cargarGeoJSON('./datos/MOVI_Pol_ZonaAccesoRestr.json')">🌎 Zona Acceso restringido</li>
                   <li onclick="cargarGeoJSON('./datos/AMBI_Pto_Compost.json')">🌎 Puntos de Compost</li>
                   <li onclick="cargarGeoJSON('./datos/BIEN_Pol_UnidBarrio.json')">Barrios</li>
-                  
+                  <li><hr></li>
+                  <li onclick="cargarGeoJSON('./datos/MOVI_Pol_ZonaAccesoRestr.json')">🌎 ZBE Load</li>
+                  <li><hr></li>
                   <li onclick="layerWorld('ne:world')">🌎 Capa mundo</li>
                   <li onclick="layerWorld('ne:boundary_lines')">🌎 Paises Bordes </li>
                   <li onclick="layerWorld('ne:coastlines')">🌎 Costas </li>
+                  <li onclick="layerWorld('geopamplona:states')">🌎 Estados </li>
+                  	
+                  <li onclick="layerWorldWFS()">🌎 calidad </li>
+                  <li onclick="layerEstadosWFS()">🌎 westados </li>
+                  
+              </ul>
+          </li>
+          <li>
+              <span onclick="toggleSubtree(this)">📂 Capas PostGIS</span>
+              <ul id="capasGeopamplona" class="nested">
               </ul>
           </li>
         </ul>
@@ -112,17 +124,17 @@
     // });
 
 
-    const geoserverLayer = viewer.imageryLayers.addImageryProvider(new Cesium.WebMapServiceImageryProvider({
-      url: 'http://localhost:8080/geoserver/ne/wms',
-      layers: 'ne:world',
-      parameters: {
-        service: 'WMS',
-        transparent: true,
-        format: 'image/png'
+    // const geoserverLayer = viewer.imageryLayers.addImageryProvider(new Cesium.WebMapServiceImageryProvider({
+    //   url: 'http://localhost:8080/geoserver/ne/wms',
+    //   layers: 'ne:world',
+    //   parameters: {
+    //     service: 'WMS',
+    //     transparent: true,
+    //     format: 'image/png'
 
-      },
-      credit: 'GeoServer - world'
-    }));
+    //   },
+    //   credit: 'GeoServer - world'
+    //  }));
 
     </script>
 

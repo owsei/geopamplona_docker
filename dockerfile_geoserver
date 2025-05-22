@@ -4,9 +4,9 @@ FROM tomcat:9.0
 RUN rm -rf /usr/local/tomcat/webapps/ROOT/*
 # Copia el index.html a la aplicación ROOT de Tomcat
 COPY tomcat/index.html /usr/local/tomcat/webapps/ROOT/index.html
-COPY tomcat/geoserver.war /usr/local/tomcat/webapps/geoserver.war
+# COPY tomcat/geoserver.war /usr/local/tomcat/webapps/geoserver.war
 COPY tomcat/web.xml /usr/local/tomcat/conf/web.xml
-COPY ./cesium /usr/local/tomcat/webapps/ROOT/cesium
+# COPY ./cesium /usr/local/tomcat/webapps/ROOT/cesium
 
 
 ENV CATALINA_OPTS="-Xms512m -Xmx2048m"

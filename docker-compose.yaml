@@ -19,7 +19,7 @@ services:
       context: .
       dockerfile: dockerfile_postgis
     ports:
-      - "5433:5432"
+      - "5432:5432"
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
@@ -43,37 +43,35 @@ services:
       - geopamplona_net
     
 
-  # geoserver:
-  #   image: docker.osgeo.org/geoserver:2.28.x
-  #   container_name: geoserver
-  #   hostname: geoserver
-  #   ports:
-  #     - "8081:8080"
-  #   environment:
-  #     GEOSERVER_ADMIN_PASSWORD: geoserver
-  #   volumes:
-  #     - geoserver_data:/opt/geoserver/data_dir
-  #     - ./geoserver/geoserver_config/web.xml:/opt/geoserver/webapps/geoserver/WEB-INF/web.xml
-  #     - ./geoserver/shapefiles:/opt/geoserver/data/shapefiles
-  #   restart: unless-stopped
-  #   networks:
-  #       - geopamplona_net
-
-
   geoserver:
-    hostname: geoserver
+    image: docker.osgeo.org/geoserver:2.28.x
     container_name: geoserver
-    build:
-      context: .
-      dockerfile: dockerfile_geoserver
+    hostname: geoserver
     ports:
       - "8080:8080"
+    volumes:
+      - ./geoserver_data_dir:/opt/geoserver/geoserver_data
+    restart: unless-stopped
     networks:
       - geopamplona_net
+
+
+  # geoserver:
+  #   hostname: geoserver
+  #   container_name: geoserver
+  #   build:
+  #     context: .
+  #     dockerfile: dockerfile_geoserver
+  #   ports:
+  #     - "8080:8080"
+  #   volumes:
+  #     - ./tomcat/geoserver.war:/usr/local/tomcat/webapps/geoserver.war
+  #   networks:
+  #     - geopamplona_net
     
 volumes:
   postgres_data:
-  geoserver_data:
+  # geoserver_data:
 
 networks:
   geopamplona_net:

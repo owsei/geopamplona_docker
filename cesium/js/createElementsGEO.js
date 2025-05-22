@@ -1,3 +1,4 @@
+const url = "http://localhost:8000";
 //   FUNCIONES DE CREACION DE ENTIDADES EN EL MAPA
 
 function crearPunto(datosPunto) {
@@ -16,16 +17,16 @@ function crearPunto(datosPunto) {
         heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND, // Úsalo si el punto está en terreno
         disableDepthTestDistance: Number.POSITIVE_INFINITY // Siempre visible encima del terreno
       },
-      label: {
-        text: datosPunto.properties.DIRECCION || 'Sin dirección',
-        font: '18pt sans-serif',
-        style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-        outlineWidth: 2,
-        verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-        pixelOffset: new Cesium.Cartesian2(0, -12),
-        heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND, // Úsalo si el punto está en terreno
-        disableDepthTestDistance: Number.POSITIVE_INFINITY // Siempre visible encima del terreno
-      }
+      // label: {
+      //   text: datosPunto.properties.DIRECCION || 'Sin dirección',
+      //   font: '18pt sans-serif',
+      //   style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+      //   outlineWidth: 2,
+      //   verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+      //   pixelOffset: new Cesium.Cartesian2(0, -12),
+      //   heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND, // Úsalo si el punto está en terreno
+      //   disableDepthTestDistance: Number.POSITIVE_INFINITY // Siempre visible encima del terreno
+      // }
     });
   }
 
@@ -77,7 +78,7 @@ function crearPunto(datosPunto) {
     const coordenadas = datosMultipoligono.geometry.coordinates[0][0]; // Asumiendo que es un polígono simple
     const posiciones = coordenadas.map(coord => {
       const [lon, lat] = coord;
-      return Cesium.Cartesian3.fromDegrees(lon, lat, 0);
+      return Cesium.Cartesian3.fromDegrees(lon, lat);
     });
 
     viewer.entities.add({
@@ -85,11 +86,29 @@ function crearPunto(datosPunto) {
       polygon: {
         hierarchy: posiciones,
         material: Cesium.Color.GREEN.withAlpha(0.5),
-        outline: true,
-        outlineColor: Cesium.Color.BLACK
+
+        // outline: true,
+        // outlineColor: Cesium.Color.BLACK
       }
     });
   }
+
+  function crearMultilinea(datosMultilinea) {
+    const coordenadas = datosMultilinea.geometry.coordinates[0]; // Asumiendo que es un polígono simple
+    const posiciones = coordenadas.map(coord => {
+      const [lon, lat] = coord;
+      return Cesium.Cartesian3.fromDegrees(lon, lat);
+    });
+
+    viewer.entities.add({ 
+       corridor: {
+          positions: posiciones,
+          width: 20.0,
+          material: Cesium.Color.BLUE.withAlpha(0.5),
+      }
+    });
+  }
+
 
 
   function toogleMap() {
@@ -142,7 +161,7 @@ function crearPunto(datosPunto) {
       .then(data => {
         dataSource= data;
 
-        const entidades = dataSource.features;
+        const entidades = dataSource[0].features;
         // console.log('Entidades:', entidades);
         for (let i = 0; i < entidades.length; i++) {
 
@@ -162,6 +181,14 @@ function crearPunto(datosPunto) {
               console.log('Es un multipolígono');
               crearMultipoligono(entidades[i]);
               break;
+            case 'MultiLineString':
+              console.log('Es una multilínea');
+              crearMultilinea(entidades[i]);
+              break;
+
+
+              
+              break;
             default:
               console.log('Tipo de geometría no soportado');
           }
@@ -179,7 +206,7 @@ function crearPunto(datosPunto) {
   function limpiarEntidades() {
     // Limpiar todas las entidades del visor
     viewer.entities.removeAll();
-    viewer.imageryLayers.removeAll();
+    
   }
 
   function puntoPamplona() {
@@ -207,6 +234,22 @@ function crearPunto(datosPunto) {
     }));
   }
 
+  function layerWorldWFS() {
+    Cesium.GeoJsonDataSource.load('http://localhost:8080/geoserver/geopamplona/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=geopamplona%3AAMBI_Pto_CalidadAire&outputFormat=application%2Fjson&maxFeatures=50')
+    .then(function (dataSource) {
+        viewer.dataSources.add(dataSource);
+        viewer.zoomTo(dataSource);
+    });
+  }
+
+  function layerEstadosWFS() {
+    Cesium.GeoJsonDataSource.load('http://localhost:8080/geoserver/tiger/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tiger%3Agiant_polygon&outputFormat=application%2Fjson&maxFeatures=50')
+    .then(function (dataSource) {
+        viewer.dataSources.add(dataSource);
+        viewer.zoomTo(dataSource);
+    });
+  }
+
   // FUNCION PARA ABRIR O CERRAR UN SUBÁRBOL EN EL MENÚ LATERAL
   function toggleSubtree(element) {
     const subtree = element.nextElementSibling;
@@ -226,5 +269,40 @@ function crearPunto(datosPunto) {
       document.getElementById("cesiumContainer").style.display = "none";
       window.is3D = !window.is3D;
     }
-    
   }
+
+
+  function dbStatus(){
+    fetch('http://localhost:8000/')
+    .then(response => response.json())
+    .then(data => console.log("Status de BD:" + data.json()))
+    .catch(error => console.error('Error:', error));
+  }
+
+
+  async function getLayersNames() {
+    const selectCapas = document.getElementById('capasGeopamplona');
+    const urlcapas = url + "/tablesgeopamplona";
+    
+    fetch(urlcapas)
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(dato => {
+              const option = document.createElement('li');
+              option.value = dato;
+              option.textContent = dato;
+              option.addEventListener('click', function() {
+                limpiarEntidades();
+                const urlGeoJson = url + "/getgeojson/" + dato;
+                cargarGeoJSON(urlGeoJson);
+              });
+              selectCapas.appendChild(option);
+            });
+          }
+    )
+    .catch(error => console.error("Error al leer el GeoJSON:", error));
+  }
+
+
+  // dbStatus();
+  getLayersNames();
