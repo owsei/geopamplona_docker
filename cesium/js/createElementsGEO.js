@@ -103,7 +103,7 @@ function crearPunto(datosPunto) {
     viewer.entities.add({ 
        corridor: {
           positions: posiciones,
-          width: 20.0,
+          width: 9.0,
           material: Cesium.Color.BLUE.withAlpha(0.5),
       }
     });
@@ -224,7 +224,6 @@ function crearPunto(datosPunto) {
         service: 'WMS',
         transparent: true,
         format: 'image/png'
-
       },
       credit: 'GeoServer - world'
     }));

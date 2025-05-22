@@ -51,6 +51,7 @@ services:
       - "8080:8080"
     volumes:
       - ./geoserver_data_dir:/opt/geoserver/geoserver_data
+      - ./tomcat/web.xml:/usr/local/tomcat/conf/web.xml
     restart: unless-stopped
     networks:
       - geopamplona_net

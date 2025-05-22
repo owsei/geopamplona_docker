@@ -6,7 +6,8 @@
 
 #cesiumContainer {
     width: 100%; 
-    height: 90vh; 
+    height: 90vh;
+    left:40px ;
     margin: 0; 
     padding: 0; 
     display: block;
@@ -46,11 +47,14 @@
     list-style-type: none;
     padding-left: 0;
     font-size: 14px;
+    overflow-y: scroll;
+    max-height: 300px;
 }
 
 .tree ul {
     margin-left: 15px;
     list-style-type: none;
+    
 }
 
 .tree ul.nested {
@@ -73,4 +77,9 @@
 
 .tree li:hover span {
     text-decoration: underline;
+}
+
+.capabase{
+    height: 100px;
+   
 }
