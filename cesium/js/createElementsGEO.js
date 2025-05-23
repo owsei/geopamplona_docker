@@ -36,16 +36,19 @@ function crearPunto(datosPunto) {
       }
     });
     
-    console.log('Altura: '+Cesium.HeightReference.RELATIVE_TO_GROUND);
-    viewer.entities.add({
-      position: Cesium.Cartesian3.fromDegrees(lon, lat, 0),
-      ellipsoid: {
-        radii: new Cesium.Cartesian3(500.0, 500.0, 500),
-        material: getColorForTemperature(datosPunto.properties.temperatura),
-        heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND  ,
-        // disableDepthTestDistance: Number.POSITIVE_INFINITY 
-      }
-    });
+    if (datosPunto.properties.temperatura)
+    {
+      viewer.entities.add({
+        position: Cesium.Cartesian3.fromDegrees(lon, lat, 0),
+        ellipsoid: {
+          radii: new Cesium.Cartesian3(500.0, 500.0, 500),
+          material: getColorForTemperature(datosPunto.properties.temperatura),
+          heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND  ,
+          // disableDepthTestDistance: Number.POSITIVE_INFINITY 
+        }
+      });
+    }
+    
 
   }
 
@@ -226,12 +229,12 @@ function crearPunto(datosPunto) {
 
   function puntoPamplona() {
     viewer.camera.flyTo({
-        destination: Cesium.Cartesian3.fromDegrees(-1.6456,42.8125, 7000),
-        // orientation: {
-        //     heading: Cesium.Math.toRadians(10.0),
-        //     pitch: Cesium.Math.toRadians(-60.0),
-        //     roll: 0.0
-        // }
+        destination: Cesium.Cartesian3.fromDegrees(-1.6456,42.8225, 7000),
+        orientation: {
+            heading: Cesium.Math.toRadians(10.0),
+            pitch: Cesium.Math.toRadians(-60.0),
+            roll: 0.0
+        }
       });
   }
 
@@ -317,6 +320,31 @@ function crearPunto(datosPunto) {
     .catch(error => console.error("Error al leer el GeoJSON:", error));
   }
 
+  function getLayersGeoServer() {
+    const selectCapas = document.getElementById('capasGeoServer');
+    const urlcapas = "http://localhost:8080/geoserver/ows?service=WMS&version=1.3.0&request=GetCapabilities";
+    
+    fetch(urlcapas)
+        .then(response => response.json())
+        .then(data => {
+
+          const capasWFS = dataSource[0].features;
+            data.forEach(dato => {
+              const option = document.createElement('li');
+              option.value = dato;
+              option.textContent = dato;
+              option.addEventListener('click', function() {
+                limpiarEntidades();
+                layerWorld(dato);
+              });
+              selectCapas.appendChild(option);
+            });
+          }
+    )
+    .catch(error => console.error("Error al leer el GeoJSON:", error));
+  }
+
 
   // dbStatus();
   getLayersNames();
+  getLayersGeoServer();

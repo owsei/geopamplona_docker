@@ -13,12 +13,15 @@ def get_geojson_from_table(table_name: str) -> Optional[dict]:
             json_build_object(
                 'type', 'Feature',
                 'geometry', ST_AsGeoJSON(ST_Transform(ST_SetSRID(geom, 25830), 4326))::json,
-                'properties', to_jsonb(t) - 'geom'|| jsonb_build_object('temperatura', sc.temperatura)
-            )
-        )
-    ) AS geojson
-    from {table_name} t
-    inner join orion.sensores_calidad sc on sc.idsensor = t.gid;"""
+                'properties', to_jsonb(t) - 'geom'"""
+    if table_name=="ambi_pto_calidadaire":
+        query =query +" || jsonb_build_object('temperatura', sc.temperatura)"
+    
+    query=query+f" ))) AS geojson from {table_name} t"""
+
+    if table_name=="ambi_pto_calidadaire":
+        query= query + " inner join orion.sensores_calidad sc on sc.idsensor = t.gid;"
+
     print(query)
     result = dbQuerys.select(query)
     if result and result[0]:
