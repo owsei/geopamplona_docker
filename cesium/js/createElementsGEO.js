@@ -3,15 +3,15 @@ const url = "http://localhost:8000";
 
 function getColorForTemperature(temp) {
   if (temp <= 0) {
-    return Cesium.Color.BLUE.withAlpha(0.5);
+    return Cesium.Color.BLUE.withAlpha(0.3);
   } else if (temp <= 15) {
-    return Cesium.Color.CYAN.withAlpha(0.5);
+    return Cesium.Color.CYAN.withAlpha(0.3);
   } else if (temp <= 25) {
-    return Cesium.Color.GREEN.withAlpha(0.5);
+    return Cesium.Color.GREEN.withAlpha(0.3);
   } else if (temp <= 35) {
-    return Cesium.Color.YELLOW.withAlpha(0.5);
+    return Cesium.Color.YELLOW.withAlpha(0.3);
   } else {
-    return Cesium.Color.RED.withAlpha(0.5);
+    return Cesium.Color.RED.withAlpha(0.3);
   }
 }
 
@@ -24,6 +24,7 @@ function crearPunto(datosPunto) {
     console.log('Lat:', lat, 'Lon:', lon);
 
     viewer.entities.add({
+      
       position: Cesium.Cartesian3.fromDegrees(lon, lat, 0), // Altura 0 para el terreno
       name: datosPunto.properties.direccion || 'Sin dirección',
       point: {
@@ -39,13 +40,14 @@ function crearPunto(datosPunto) {
     if (datosPunto.properties.temperatura)
     {
       viewer.entities.add({
+        
         position: Cesium.Cartesian3.fromDegrees(lon, lat, 0),
         ellipsoid: {
           radii: new Cesium.Cartesian3(500.0, 500.0, 500),
           material: getColorForTemperature(datosPunto.properties.temperatura),
           heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND  ,
-          // disableDepthTestDistance: Number.POSITIVE_INFINITY 
-        }
+          disableDepthTestDistance: Number.POSITIVE_INFINITY
+        }        
       });
     }
     
@@ -96,22 +98,21 @@ function crearPunto(datosPunto) {
     });
   }
 
+
   function crearMultipoligono(datosMultipoligono) {
-    const coordenadas = datosMultipoligono.geometry.coordinates[0][0]; // Asumiendo que es un polígono simple
-    const posiciones = coordenadas.map(coord => {
-      const [lon, lat] = coord;
-      return Cesium.Cartesian3.fromDegrees(lon, lat);
-    });
-
+    
+    volarA(-1,42);
+    
     viewer.entities.add({
-      // position : Cesium.Cartesian3.fromDegrees(datosMultipoligono.geometry.coordinates[0][0],0),
       polygon: {
-        hierarchy: posiciones,
-        material: Cesium.Color.GREEN.withAlpha(0.5),
-
-        // outline: true,
-        // outlineColor: Cesium.Color.BLACK
-      }
+        hierarchy: new Cesium.PolygonHierarchy(
+          Cesium.Cartesian3.fromRadiansArray([
+            -1,42,-1,42,-1.2,42.5,-1.6,42.5
+          ]),
+        ),
+        material: Cesium.Color.RED.withAlpha(1),
+        classificationType: Cesium.ClassificationType.BOTH,
+      },
     });
   }
 
@@ -125,40 +126,25 @@ function crearPunto(datosPunto) {
     viewer.entities.add({ 
        corridor: {
           positions: posiciones,
-          width: 9.0,
+          width: 10.0,
           material: Cesium.Color.BLUE.withAlpha(0.5),
+          clampToGround: true
       }
     });
   }
 
 
-
-  function toogleMap() {
-
-    if (window.google)
-    {
-      
-      window.viewer = new Cesium.Viewer("cesiumContainer", {
-        terrain: Cesium.Terrain.fromWorldTerrain(),
+  async function mostrar3DTilesGoogle(){
+     try {
+      window.googleTileset = await Cesium.createGooglePhotorealistic3DTileset({
+        // Only the Google Geocoder can be used with Google Photorealistic 3D Tiles.  Set the `geocode` property of the viewer constructor options to IonGeocodeProviderType.GOOGLE.
+        onlyUsingWithGoogleGeocoder: true,
       });
+      viewer.scene.primitives.add(googleTileset);
+    } catch (error) {
+      console.log(`Error loading Photorealistic 3D Tiles tileset.
+      ${error}`);
     }
-    else
-    {
-      window.viewer = new Cesium.Viewer("cesiumContainer", {
-        timeline: false,
-        animation: false,
-        sceneModePicker: false,
-        baseLayerPicker: false,
-        geocoder: Cesium.IonGeocodeProviderType.GOOGLE,
-        // The globe does not need to be displayed,
-        // since the Photorealistic 3D Tiles include terrain
-        globe: false,
-      });
-    }
-    
-    window.google=!window.google
-
-
   }
 
 
@@ -184,6 +170,28 @@ function crearPunto(datosPunto) {
         dataSource= data;
 
         const entidades = dataSource[0].features;
+        // if (dataSource[0].features[0].properties.feature)
+        // {
+        //   let feature = dataSource[0].features[0].properties.feature;
+        //   if (!window.layerFeaturesInMap.includes(feature)) {
+        //     window.layerFeaturesInMap.push(dataSource[0].features[0].properties.feature);
+        //   }
+        //   else {
+        //     console.log('La entidad ya está en el mapa:', feature);
+        //     // Eliminar la entidad del visor
+        //     const entidadesAEliminar = viewer.entities.values.filter(entidad => entidad.properties.feature === feature);
+        //     console.log('Entidades a eliminar:', entidadesAEliminar);
+        //     // Eliminar las entidades encontradas
+        //     if (entidadesAEliminar.length > 0) {  
+        //       console.log('Eliminando entidades:', entidadesAEliminar);
+        //       // Eliminar las entidades del visor
+        //       viewer.entities.remove(entidadesAEliminar);
+        //     }
+        //   } 
+        // }
+        
+        
+
         // console.log('Entidades:', entidades);
         for (let i = 0; i < entidades.length; i++) {
 
@@ -212,10 +220,9 @@ function crearPunto(datosPunto) {
           }
         }
 
-        
-
-
+        // puntoPamplona()
         console.log('finalizado');
+        return dataSource[0].features[0].properties.feature
       })
       .catch(error => console.error("Error al leer el GeoJSON:", error));
     }//FIN cargarGeoJSON 
@@ -229,12 +236,23 @@ function crearPunto(datosPunto) {
 
   function puntoPamplona() {
     viewer.camera.flyTo({
-        destination: Cesium.Cartesian3.fromDegrees(-1.6456,42.8225, 7000),
+        destination: Cesium.Cartesian3.fromDegrees(-1.6756,42.7415, 7000),
         orientation: {
             heading: Cesium.Math.toRadians(10.0),
-            pitch: Cesium.Math.toRadians(-60.0),
+            pitch: Cesium.Math.toRadians(-40.0),
             roll: 0.0
         }
+      });
+  }
+
+  function volarA(lon,lat) {
+    viewer.camera.flyTo({
+        destination: Cesium.Cartesian3.fromDegrees(lon,lat, 7000),
+      //   orientation: {
+      //       heading: Cesium.Math.toRadians(10.0),
+      //       pitch: Cesium.Math.toRadians(-40.0),
+      //       roll: 0.0
+      //   }
       });
   }
 
@@ -306,8 +324,20 @@ function crearPunto(datosPunto) {
         .then(data => {
             data.forEach(dato => {
               const option = document.createElement('li');
+              option.id = dato;
               option.value = dato;
               option.textContent = dato;
+
+              // Crear el checkbox
+              const checkbox = document.createElement('input');
+              checkbox.type = 'checkbox';
+              checkbox.checked = true; // Inicialmente visible
+              checkbox.id = 'layer_'+dato;
+              capa='layer_'+dato;
+
+              // Agregar el checkbox y el label al <li>
+              option.appendChild(checkbox);
+
               option.addEventListener('click', function() {
                 limpiarEntidades();
                 const urlGeoJson = url + "/getgeojson/" + dato;
@@ -319,6 +349,8 @@ function crearPunto(datosPunto) {
     )
     .catch(error => console.error("Error al leer el GeoJSON:", error));
   }
+
+
 
   function getLayersGeoServer() {
     const selectCapas = document.getElementById('capasGeoServer');

@@ -28,7 +28,15 @@
 <body>
   
   <div id="map"></div>
-  <div id="cesiumContainer"></div>
+  <div id="cesiumContainer">
+    <div id="checkGoogleTiles" class="checkbox-container"> 
+      <label>
+        <input type="checkbox" id="toggle3DTiles" />
+        Mostrar 3D Tiles de Google
+      </label>
+    </div>
+    
+  </div>
   <div class="floating-layer">
       <h3>Información Adicional</h3>
       <p>Esta es una capa flotante sobre el mapa.</p>
@@ -41,6 +49,7 @@
                   <li onclick="cargarGeoJSON('./datos/MOVI_Pol_ZonaAccesoRestr.json')">🌎 Zona Acceso restringido</li>
                   <li onclick="cargarGeoJSON('./datos/AMBI_Pto_Compost.json')">🌎 Puntos de Compost</li>
                   <li onclick="cargarGeoJSON('./datos/BIEN_Pol_UnidBarrio.json')">Barrios</li>
+                  <li onclick="cargarGeoJSON('./datos/mobi_pol_juegosinf.json')">Parques Infantiles</li>
                   <li><hr></li>
                   <li onclick="cargarGeoJSON('./datos/MOVI_Pol_ZonaAccesoRestr.json')">🌎 ZBE Load</li>
                   <li><hr></li>
@@ -73,8 +82,6 @@
         <br>
         <br>
         <h5>Cambiar mapa</h5>
-        <!-- <button class="btn btn-primary" onclick="toogleMap()">Cambiar tipo mapa</button> -->
-        <!-- <button class="btn btn-primary" onclick="toogleMap()">Cambiar Vista </button> -->
       </div>
   </div>
   <!-- <button class="btn btn-primary" onclick="toggleView()">Cambiar Vista (2D/3D)</button> -->
@@ -82,6 +89,12 @@
   <script type="module">
 
     import './js/createElementsGEO.js';
+    
+    //Definicion de variables globales
+    window.googleTileset = null;
+    window.google=false;
+    const pinBuilder = new Cesium.PinBuilder();
+    window.layerFeaturesInMap=[];
 
     // window.is3D = true;
     document.getElementById("map").style.display =  "none" ;
@@ -90,19 +103,38 @@
     // Inicializar Cesium
     Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3YWQ3ZWY4ZS03NzBjLTRjNzktYTYyNy0zMTRkYmE1NmE1NDciLCJpZCI6MjgwODk3LCJpYXQiOjE3NDEwNzIzMzl9.rpQ6pVt0APCbZ_zhTJkhquCVXwmMo3unuk4ZafCea-k'; // Usa tu token de Cesium o deja en blanco si es local
 
-    window.google=false;
-    const viewer = new Cesium.Viewer("cesiumContainer", {
+    
+    window.viewer = new Cesium.Viewer("cesiumContainer", {
         terrain: Cesium.Terrain.fromWorldTerrain(),
+        shouldAnimate: true,
+    });
+    window.viewer.scene.skyAtmosphere.show = false;
+
+    // Enable rendering the sky
+
+
+    document.getElementById('toggle3DTiles').addEventListener('change', function () {
+      if (this.checked) {
+        mostrar3DTilesGoogle(); // Muestra el tileset
+      } else if (window.googleTileset) {
+        googleTileset.show = false; // Oculta el tileset
+        window.viewer.scene.primitives.remove(googleTileset)
+      }
     });
 
-    window.viewer = viewer; // Make the viewer accessible globally
 
-    const pinBuilder = new Cesium.PinBuilder();
-    
-    // Enable rendering the sky
-    // viewer.scene.skyAtmosphere.show = true;
+    // const dataSource = await Cesium.Cesium3DTileset.fromJson("datos/ruta.czml");
+    viewer.dataSources.add(Cesium.CzmlDataSource.load('/datos/Vehicle.czml'));
+    viewer.scene.camera.setView({
+      destination: Cesium.Cartesian3.fromDegrees(-116.52, 35.02, 95000),
+      orientation: {
+        heading: 6,
+      },
+    });
 
-
+    // volarA(-122.93797, 39.50935)
+    // viewer.dataSources.add(Cesium.CzmlDataSource.load("datos/ruta.czml"));
+    // viewer.trackedEntity = dataSource.entities.getById("path"); 
 
     // Add Google Photorealistic 3D Tiles
     // try {
