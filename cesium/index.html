@@ -45,20 +45,21 @@
           <li>
               <span onclick="toggleSubtree(this)">📂 Capas Base</span>
               <ul id="capabase" class="nested">
-                  <li onclick="cargarGeoJSON('./datos/MOVI_Pto_AccesoRestr.json')">🌎 Puntos de Acceso restringido</li>
+                  <!-- <li onclick="cargarGeoJSON('./datos/MOVI_Pto_AccesoRestr.json')">🌎 Puntos de Acceso restringido</li>
                   <li onclick="cargarGeoJSON('./datos/MOVI_Pol_ZonaAccesoRestr.json')">🌎 Zona Acceso restringido</li>
                   <li onclick="cargarGeoJSON('./datos/AMBI_Pto_Compost.json')">🌎 Puntos de Compost</li>
                   <li onclick="cargarGeoJSON('./datos/BIEN_Pol_UnidBarrio.json')">Barrios</li>
-                  <li onclick="cargarGeoJSON('./datos/mobi_pol_juegosinf.json')">Parques Infantiles</li>
+                  <li onclick="cargarGeoJSON('./datos/mobi_pol_juegosinf.json')">Parques Infantiles</li> -->
+                  <!-- <li><hr></li> -->
+                  <!-- <li onclick="cargarGeoJSON('./datos/MOVI_Pol_ZonaAccesoRestr.json')">🌎 ZBE Load</li> -->
+                   <li onclick="layerGeoserver('geopamplona:movi_pol_zonaaccesorestr')">🌎 Zona Acceso Restringido </li>
                   <li><hr></li>
-                  <li onclick="cargarGeoJSON('./datos/MOVI_Pol_ZonaAccesoRestr.json')">🌎 ZBE Load</li>
-                  <li><hr></li>
-                  <li onclick="layerWorld('ne:world')">🌎 Capa mundo</li>
+                  <li onclick="layerCompostGeoserver('geopamplona:ambi_pto_compost')">🌎 compost</li>
                   <li onclick="layerWorld('ne:boundary_lines')">🌎 Paises Bordes </li>
                   <li onclick="layerWorld('ne:coastlines')">🌎 Costas </li>
-                  <li onclick="layerWorld('	geopamplona:ambi_pto_calidadaire')">🌎 Calidad aire geoserver </li>
-                  	
-                  <li onclick="layerWorldWFS()">🌎 calidad </li>
+                  <li onclick="layerWorld('geopamplona:ambi_pto_calidadaire')">🌎 Calidad aire geoserver </li>
+                  <hr>
+                  <li onclick="layerCalidadWFS()">🌎 clima sensores </li>
                   <li onclick="layerEstadosWFS()">🌎 westados </li>
                   
               </ul>
@@ -78,7 +79,9 @@
         </ul>
         <br>
         <h5>Vuelos</h5>
-        <button class="btn btn-primary" onclick="limpiarEntidades()">Limpiar</button>&nbsp;<button class="btn btn-primary" onclick="puntoPamplona()">Pamplona</button>
+        <button class="btn btn-primary" onclick="limpiarEntidades()">Limpiar</button><br>
+        <button class="btn btn-primary" onclick="puntoPamplona()">Pamplona</button><br>
+        <button class="btn btn-primary" onclick="cargarRutaVehicle()">Cargar Ruta Vehicle</button>
         <br>
         <br>
         <h5>Cambiar mapa</h5>
@@ -105,9 +108,24 @@
 
     
     window.viewer = new Cesium.Viewer("cesiumContainer", {
-        terrain: Cesium.Terrain.fromWorldTerrain(),
+        terrain: Cesium.Terrain.fromWorldTerrain({
+          geocoder: true,
+          homeButton: true,
+          sceneModePicker: true,
+          baseLayerPicker: true,
+          navigationHelpButton: true,
+          navigationInstructionsInitiallyVisible: true,
+          animation: false,
+          timeline: false,
+          fullscreenButton: false,
+          vrButton: false,
+          infoBox: true,
+          selectionIndicator: true,
+
+        }),
         shouldAnimate: true,
     });
+    viewer.scene.globe.enableLighting = true;
     window.viewer.scene.skyAtmosphere.show = false;
 
     // Enable rendering the sky
@@ -123,16 +141,10 @@
     });
 
 
-    // const dataSource = await Cesium.Cesium3DTileset.fromJson("datos/ruta.czml");
-    viewer.dataSources.add(Cesium.CzmlDataSource.load('/datos/Vehicle.czml'));
-    viewer.scene.camera.setView({
-      destination: Cesium.Cartesian3.fromDegrees(-116.52, 35.02, 95000),
-      orientation: {
-        heading: 6,
-      },
-    });
 
-    // volarA(-122.93797, 39.50935)
+    
+
+    
     // viewer.dataSources.add(Cesium.CzmlDataSource.load("datos/ruta.czml"));
     // viewer.trackedEntity = dataSource.entities.getById("path"); 
 

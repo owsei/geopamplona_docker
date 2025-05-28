@@ -101,18 +101,21 @@ function crearPunto(datosPunto) {
 
   function crearMultipoligono(datosMultipoligono) {
     
-    volarA(-1,42);
-    
+   const coordenadas = datosMultipoligono.geometry.coordinates[0][0]; // Asumiendo que es un polígono simple
+    const posiciones = coordenadas.map(coord => {
+      const [lon, lat] = coord;
+      return Cesium.Cartesian3.fromDegrees(lon, lat);
+    });
+
     viewer.entities.add({
+      // position : Cesium.Cartesian3.fromDegrees(datosMultipoligono.geometry.coordinates[0][0],0),
       polygon: {
-        hierarchy: new Cesium.PolygonHierarchy(
-          Cesium.Cartesian3.fromRadiansArray([
-            -1,42,-1,42,-1.2,42.5,-1.6,42.5
-          ]),
-        ),
-        material: Cesium.Color.RED.withAlpha(1),
-        classificationType: Cesium.ClassificationType.BOTH,
-      },
+        hierarchy: posiciones,
+        material: Cesium.Color.GREEN.withAlpha(0.5),
+
+        // outline: true,
+        // outlineColor: Cesium.Color.BLACK
+      }
     });
   }
 
@@ -168,29 +171,14 @@ function crearPunto(datosPunto) {
       .then(response => response.json())
       .then(data => {
         dataSource= data;
-
-        const entidades = dataSource[0].features;
-        // if (dataSource[0].features[0].properties.feature)
-        // {
-        //   let feature = dataSource[0].features[0].properties.feature;
-        //   if (!window.layerFeaturesInMap.includes(feature)) {
-        //     window.layerFeaturesInMap.push(dataSource[0].features[0].properties.feature);
-        //   }
-        //   else {
-        //     console.log('La entidad ya está en el mapa:', feature);
-        //     // Eliminar la entidad del visor
-        //     const entidadesAEliminar = viewer.entities.values.filter(entidad => entidad.properties.feature === feature);
-        //     console.log('Entidades a eliminar:', entidadesAEliminar);
-        //     // Eliminar las entidades encontradas
-        //     if (entidadesAEliminar.length > 0) {  
-        //       console.log('Eliminando entidades:', entidadesAEliminar);
-        //       // Eliminar las entidades del visor
-        //       viewer.entities.remove(entidadesAEliminar);
-        //     }
-        //   } 
-        // }
         
-        
+        let entidades=null;
+        if (!Array.isArray(dataSource)){
+           entidades = dataSource.features;  
+        }
+        else {
+            entidades = dataSource[0].features;
+        }
 
         // console.log('Entidades:', entidades);
         for (let i = 0; i < entidades.length; i++) {
@@ -256,14 +244,63 @@ function crearPunto(datosPunto) {
       });
   }
 
-  function layerWorld(wms_name) {
+  function cargarRutaVehicle() {
+    // Cargar CZML
+    viewer.dataSources.add(Cesium.CzmlDataSource.load('datos/Vehicle.czml'));
+    viewer.scene.camera.setView({
+      destination: Cesium.Cartesian3.fromDegrees(-116.52, 35.02, 95000),
+      orientation: {
+        heading: 6,
+      },
+    });
+    volarA(-116.52, 35.02,8000)
+  }
+
+  function layerCompostGeoserver(wms_name) {
     viewer.imageryLayers.addImageryProvider(new Cesium.WebMapServiceImageryProvider({
-      url: 'http://localhost:8080/geoserver/ne/wms',
+      url: 'http://localhost:8080/geoserver/geopamplona/wms',
       layers: wms_name,
       parameters: {
         service: 'WMS',
+        version: '1.1.0',
+        request: 'GetMap',
+        format: 'image/png',
         transparent: true,
-        format: 'image/png'
+        styles: '',
+        tiled: true,
+        crs: 'EPSG:4326'  //
+
+      },
+      credit: 'GeoServer - world'
+    }));
+  }
+
+  function layerClimaSensoresWFS() {
+    Cesium.GeoJsonDataSource.load('http://localhost:8080/geoserver/geopamplona/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=geopamplona%3Aambi_pto_compost&outputFormat=application%2Fjson&maxFeatures=50')
+    .then(function (dataSource) {
+      // cargarGeoJSON(dataSource);  
+      viewer.dataSources.add(dataSource);
+      viewer.zoomTo(dataSource);
+    }).
+    catch(function (error) {
+        console.error('Error al cargar el GeoJSON:', error);
+    });
+  }
+
+  function layerGeoserver(wms_name) {
+    viewer.imageryLayers.addImageryProvider(new Cesium.WebMapServiceImageryProvider({
+      url: 'http://localhost:8080/geoserver/geopamplona/wms',
+      layers: wms_name,
+      parameters: {
+        service: 'WMS',
+        version: '1.1.0',
+        request: 'GetFeature',
+        format: 'application/json',
+        transparent: true,
+        styles: '',
+        tiled: true,
+        crs: 'EPSG:4326'  //
+
       },
       credit: 'GeoServer - world'
     }));
