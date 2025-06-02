@@ -1,0 +1,24 @@
+[
+  {
+    "id": "document",
+    "name": "Simple CZML example",
+    "version": "1.0"
+  },
+  {
+    "id": "point1",
+    "name": "Punto de ejemplo",
+    "position": {
+      "cartographicDegrees": [-75.0, 40.0, 100.0]
+    },
+    "point": {
+      "color": {
+        "rgba": [255, 0, 0, 255]
+      },
+      "outlineColor": {
+        "rgba": [0, 0, 0, 255]
+      },
+      "outlineWidth": 2,
+      "pixelSize": 10
+    }
+  }
+]

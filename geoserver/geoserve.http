@@ -1,0 +1,11 @@
+
+curl -X GET http://localhost:8080/geoserver/rest/layers.xml \
+  -H "Authorization: Basic $(echo -n 'admin:geoserver' | base64)"
+
+###
+
+curl -i -X OPTIONS http://localhost:8080/geoserver/rest/layers.xml \
+  -H "Origin: http://localhost:82" \
+  -H "Access-Control-Request-Method: GET" \
+  -H "Access-Control-Request-Headers: Authorization"
+

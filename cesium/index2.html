@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- CESIUM -->
+    <script src="https://unpkg.com/cesium@latest/Build/Cesium/Cesium.js"></script>
+    <link href="https://cesium.com/downloads/cesiumjs/releases/1.129/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+    <title>Document</title>
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+
+</head>
+<body>
+    <div id="cesiumViewer"></div>
+
+    <script>
+        
+        let viewer= new Cesium.Viewer("cesiumViewer")
+        let czml= new Cesium.CzmlDataSource();
+        let elementos= czml.load("datos/prueba.czml");
+        viewer.dataSources.add(czml);
+
+
+    </script>
+</body>
+</html>

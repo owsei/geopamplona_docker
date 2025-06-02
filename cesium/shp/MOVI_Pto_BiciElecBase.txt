@@ -1,0 +1,10 @@
+﻿Movilidad- Bases de bicicleta eléctrica:
+     Atributo: FEATURE - Descripción: Código de capa
+     Atributo: ID - Descripción: Código identificador bases de bicicleta eléctrica
+     Atributo: ID_N - Descripción: Código de base de bicicleta eléctrica
+     Atributo: TIPO - Descripción: Tipo de elemento
+     Atributo: CATEGORIA - Descripción: Tipo de base de bicicleta eléctrica
+     Atributo: NOMBRE - Descripción: Nombre de base de bicicleta eléctrica
+     Atributo: N_PLAZAS - Descripción: Número de plazas en la base de bicicleta eléctrica
+     Atributo: ENLACE - Descripción: Dirección página web
+     Atributo: FECHA - Descripción: Fecha de alta de base de bicicleta eléctrica

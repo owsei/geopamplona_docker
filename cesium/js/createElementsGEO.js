@@ -289,17 +289,15 @@ function crearPunto(datosPunto) {
 
   function layerGeoserver(wms_name) {
     viewer.imageryLayers.addImageryProvider(new Cesium.WebMapServiceImageryProvider({
-      url: 'http://localhost:8080/geoserver/geopamplona/wms',
+      url: 'http://localhost:8080/geoserver/geopamplona/ows',
       layers: wms_name,
       parameters: {
-        service: 'WMS',
-        version: '1.1.0',
+        service: 'WFS',
+        version: '1.0.0',
         request: 'GetFeature',
+        typeName: wms_name,
         format: 'application/json',
-        transparent: true,
-        styles: '',
-        tiled: true,
-        crs: 'EPSG:4326'  //
+        
 
       },
       credit: 'GeoServer - world'
@@ -307,8 +305,9 @@ function crearPunto(datosPunto) {
   }
 
   function layerWorldWFS() {
-    Cesium.GeoJsonDataSource.load('http://localhost:8080/geoserver/geopamplona/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=geopamplona%3AAMBI_Pto_CalidadAire&outputFormat=application%2Fjson&maxFeatures=50')
+    Cesium.GeoJsonDataSource.load('http://localhost:8080/geoserver/geopamplona/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=geopamplona%3Aambi_pto_calidadaire&outputFormat=application%2Fjson&maxFeatures=50')
     .then(function (dataSource) {
+        cargarGeoJSON(dataSource);
         viewer.dataSources.add(dataSource);
         viewer.zoomTo(dataSource);
     });
@@ -391,7 +390,7 @@ function crearPunto(datosPunto) {
 
   function getLayersGeoServer() {
     const selectCapas = document.getElementById('capasGeoServer');
-    const urlcapas = "http://localhost:8080/geoserver/ows?service=WMS&version=1.3.0&request=GetCapabilities";
+    const urlcapas = "http://localhost:8000/getgeolayer";
     
     fetch(urlcapas)
         .then(response => response.json())
@@ -411,6 +410,7 @@ function crearPunto(datosPunto) {
           }
     )
     .catch(error => console.error("Error al leer el GeoJSON:", error));
+
   }
 
 

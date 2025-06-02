@@ -5,6 +5,8 @@ import servicePostGIS
 import psycopg2
 import dbConfig
 from fastapi.middleware.cors import CORSMiddleware
+import base64
+import requests
 
 
 app = FastAPI()
@@ -59,3 +61,29 @@ def get_tables_geopamplona():
         return tables
     else:
         raise HTTPException(status_code=404, detail="No se encontraron tablas o la base de datos no existe")
+
+
+
+
+@app.get("/getgeolayer")
+def get_geoserver_layer():
+    GEOSERVER_URL = "http://geoserver:8080/geoserver/rest/layers.xml"
+    USERNAME = "admin"
+    PASSWORD = "geoserver"
+
+    credentials = f"{USERNAME}:{PASSWORD}"
+    encoded_credentials = base64.b64encode(credentials.encode()).decode()
+
+    headers = {
+        "Authorization": f"Basic {encoded_credentials}",
+        "Accept": "application/xml"
+    }
+
+    print(f"Obteniendo capa de Geoserver desde: {GEOSERVER_URL}")
+   
+    response = requests.get(GEOSERVER_URL, headers=headers)
+    
+    if response.status_code == 200:
+        return response.text
+    else:
+        raise HTTPException(status_code=response.status_code, detail="Error al obtener la capa de Geoserver")

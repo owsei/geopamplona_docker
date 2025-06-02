@@ -1,0 +1,52 @@
+[
+  {
+    "id": "document",
+    "name": "Coche 3D en Pamplona",
+    "version": "1.0",
+    "clock": {
+      "interval": "2025-05-25T12:00:00Z/2025-05-25T12:00:30Z",
+      "currentTime": "2025-05-25T12:00:00Z",
+      "multiplier": 1,
+      "loopMode": "LOOP"
+    }
+  },
+  {
+    "id": "coche3D",
+    "availability": "2025-05-25T12:00:00Z/2025-05-25T12:00:30Z",
+    "position": {
+      "interpolationAlgorithm": "LAGRANGE",
+      "interpolationDegree": 1,
+      "epoch": "2025-05-25T12:00:00Z",
+      "cartographicDegrees": [
+        0,   -1.6443, 42.8170, 0,
+        5,   -1.6450, 42.8155, 0,
+        10,  -1.6467, 42.8139, 0,
+        15,  -1.6476, 42.8121, 0,
+        20,  -1.6482, 42.8100, 0,
+        30,  -1.6500, 42.8075, 0
+      ]
+    },
+    "orientation": {
+      "velocityReference": "#position"
+    },
+    "model": {
+      "gltf": "https://raw.githubusercontent.com/CesiumGS/3d-tiles-samples/main/3D%20Models/CesiumGroundVehicle.glb",
+      "scale": 1.5,
+      "minimumPixelSize": 64,
+      "maximumScale": 200
+    },
+    "path": {
+      "material": {
+        "polylineOutline": {
+          "color": { "rgba": [0, 255, 255, 255] },
+          "outlineColor": { "rgba": [0, 0, 0, 255] },
+          "outlineWidth": 2
+        }
+      },
+      "width": 4,
+      "leadTime": 0,
+      "trailTime": 30,
+      "resolution": 5
+    }
+  }
+]

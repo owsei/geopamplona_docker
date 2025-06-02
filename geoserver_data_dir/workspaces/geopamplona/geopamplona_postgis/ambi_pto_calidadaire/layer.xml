@@ -1,0 +1,16 @@
+<layer>
+  <name>ambi_pto_calidadaire</name>
+  <id>LayerInfoImpl-68fbe607:197327cdf2f:-7fff</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--570ae188:124761b8d78:-7fdf</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-68fbe607:197327cdf2f:-8000</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2025-06-02 21:12:13.974 UTC</dateCreated>
+</layer>

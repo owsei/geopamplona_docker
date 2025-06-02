@@ -1,0 +1,10 @@
+﻿Movilidad- Movilidad vertical:
+     Atributo: FEATURE - Descripción: Código de capa
+     Atributo: ID - Descripción: Código identificador de elemento de movilidad vertical
+     Atributo: ID_N - Descripción: Código de elemento de movilidad vertical
+     Atributo: TIPO - Descripción: Tipo de elemento
+     Atributo: CATEGORIA - Descripción: Descripción de tipo de elemento de movilidad vertical
+     Atributo: NOMBRE - Descripción: Nombre de elemento de movilidad vertical
+     Atributo: CAPACIDAD - Descripción: Capacidad en elemento de movilidad vertical
+     Atributo: AÑO - Descripción: Fecha de comienzo de elemento de movilidad vertical
+     Atributo: OBSERVACIO - Descripción: Observaciones de elemento de movilidad vertical

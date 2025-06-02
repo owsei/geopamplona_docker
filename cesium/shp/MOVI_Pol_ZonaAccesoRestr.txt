@@ -1,0 +1,6 @@
+﻿Movilidad- Perímetro zona restringida:
+     Atributo: FEATURE - Descripción: Código de capa
+     Atributo: ID - Descripción: Código identificador
+     Atributo: TIPO - Descripción: Tipo de elemento
+     Atributo: CATEGORIA - Descripción: ZAC zona de acceso restringido
+     Atributo: DESCRIP - Descripción: Nombre zona de acceso restringido

@@ -1,0 +1,9 @@
+﻿Movilidad- Puntos de entrada y salida:
+     Atributo: FEATURE - Descripción: Código de capa
+     Atributo: ID - Descripción: Código identificador
+     Atributo: ID_N - Descripción: Código de identificador del conjunto de punto de acceso a zona con restricciones al tráfico rodado
+     Atributo: TIPO - Descripción: Tipo de elemento
+     Atributo: CATEGORIA - Descripción: Descripción de tipo de punto de acceso a zona con restricciones al tráfico rodado
+     Atributo: DIRECCION - Descripción: Ubicación de punto de acceso a zona con restricciones al tráfico rodado
+     Atributo: TITULAR - Descripción: Titular de punto de acceso a zona con restricciones al tráfico rodado
+     Atributo: SOURCE - Descripción: Dirección página web

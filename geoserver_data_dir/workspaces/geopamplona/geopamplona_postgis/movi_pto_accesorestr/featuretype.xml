@@ -1,0 +1,43 @@
+<featureType>
+  <id>FeatureTypeInfoImpl--1037d4f2:196ff19dbb9:-7f0f</id>
+  <name>movi_pto_accesorestr</name>
+  <nativeName>movi_pto_accesorestr</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl--1037d4f2:196ff19dbb9:-7f19</id>
+  </namespace>
+  <title>movi_pto_accesorestr</title>
+  <keywords>
+    <string>features</string>
+    <string>movi_pto_accesorestr</string>
+  </keywords>
+  <srs>EPSG:404000</srs>
+  <nativeBoundingBox>
+    <minx>610410.9375</minx>
+    <maxx>611244.0</maxx>
+    <miny>4741057.0</miny>
+    <maxy>4742072.0</maxy>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>610410.9375</minx>
+    <maxx>611244.0</maxx>
+    <miny>4741057.0</miny>
+    <maxy>4742072.0</maxy>
+    <crs>EPSG:4326</crs>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <store class="dataStore">
+    <id>DataStoreInfoImpl--1037d4f2:196ff19dbb9:-7f18</id>
+  </store>
+  <serviceConfiguration>false</serviceConfiguration>
+  <simpleConversionEnabled>false</simpleConversionEnabled>
+  <internationalTitle/>
+  <internationalAbstract/>
+  <maxFeatures>0</maxFeatures>
+  <numDecimals>0</numDecimals>
+  <padWithZeros>false</padWithZeros>
+  <forcedDecimal>false</forcedDecimal>
+  <overridingServiceSRS>false</overridingServiceSRS>
+  <skipNumberMatched>false</skipNumberMatched>
+  <circularArcPresent>false</circularArcPresent>
+</featureType>

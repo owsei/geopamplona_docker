@@ -1,0 +1,17 @@
+<layer>
+  <name>movi_pto_accesorestr</name>
+  <id>LayerInfoImpl--1037d4f2:196ff19dbb9:-7f0e</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--570ae188:124761b8d78:-7fdf</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--1037d4f2:196ff19dbb9:-7f0f</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2025-05-23 22:09:03.328 UTC</dateCreated>
+  <dateModified>2025-05-23 22:18:40.27 UTC</dateModified>
+</layer>

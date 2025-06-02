@@ -50,7 +50,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./geoserver_data_dir:/opt/geoserver/geoserver_data
+      - ./geoserver_data_dir:/opt/geoserver_data
       - ./tomcat/web.xml:/usr/local/tomcat/conf/web.xml
     restart: unless-stopped
     networks:

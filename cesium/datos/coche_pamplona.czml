@@ -1,0 +1,56 @@
+[
+  {
+    "id": "document",
+    "name": "Coche en Pamplona",
+    "version": "1.0",
+    "clock": {
+      "interval": "2025-05-25T12:00:00Z/2025-05-25T12:00:20Z",
+      "currentTime": "2025-05-25T12:00:00Z",
+      "multiplier": 1,
+      "loopMode": "LOOP"
+    }
+  },
+  {
+    "id": "vehiculo1",
+    "availability": "2025-05-25T12:00:00Z/2025-05-25T12:00:20Z",
+    "position": {
+      "interpolationAlgorithm": "LAGRANGE",
+      "interpolationDegree": 1,
+      "epoch": "2025-05-25T12:00:00Z",
+      "cartographicDegrees": [
+        0, -1.6476, 42.8169, 10,
+        5, -1.6450, 42.8180, 10,
+        10, -1.6415, 42.8185, 10,
+        15, -1.6380, 42.8187, 10,
+        20, -1.6345, 42.8188, 10
+      ]
+    },
+    "point": {
+      "color": { "rgba": [255, 0, 0, 255] },
+      "outlineColor": { "rgba": [0, 0, 0, 255] },
+      "outlineWidth": 2,
+      "pixelSize": 12
+    },
+    "label": {
+      "text": "Coche",
+      "font": "14pt sans-serif",
+      "style": "FILL_AND_OUTLINE",
+      "outlineWidth": 2,
+      "verticalOrigin": "BOTTOM",
+      "pixelOffset": [0, -15]
+    },
+    "path": {
+      "material": {
+        "polylineOutline": {
+          "color": { "rgba": [255, 0, 0, 255] },
+          "outlineColor": { "rgba": [0, 0, 0, 255] },
+          "outlineWidth": 2
+        }
+      },
+      "width": 4,
+      "leadTime": 0,
+      "trailTime": 20,
+      "resolution": 5
+    }
+  }
+]

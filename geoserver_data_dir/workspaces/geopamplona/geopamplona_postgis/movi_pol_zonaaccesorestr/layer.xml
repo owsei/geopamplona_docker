@@ -1,0 +1,17 @@
+<layer>
+  <name>movi_pol_zonaaccesorestr</name>
+  <id>LayerInfoImpl--1037d4f2:196ff19dbb9:-7f12</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--570ae188:124761b8d78:-7fe0</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--1037d4f2:196ff19dbb9:-7f13</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2025-05-23 22:00:17.60 UTC</dateCreated>
+  <dateModified>2025-05-23 22:17:49.179 UTC</dateModified>
+</layer>
