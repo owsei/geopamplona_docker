@@ -112,21 +112,43 @@
           geocoder: true,
           homeButton: true,
           sceneModePicker: true,
-          baseLayerPicker: true,
           navigationHelpButton: true,
           navigationInstructionsInitiallyVisible: true,
-          animation: false,
-          timeline: false,
-          fullscreenButton: false,
-          vrButton: false,
-          infoBox: true,
-          selectionIndicator: true,
-
         }),
-        shouldAnimate: true,
     });
+    
+    // Añadir OpenStreetMap como capa base
+    const imageryProvider = new Cesium.OpenStreetMapImageryProvider({
+        url : 'https://a.tile.openstreetmap.org/',
+        maximumLevel: 19,
+        credit: '© OpenStreetMap contributors'
+    });
+
+    window.baseLayer=[];
+    //borrado de capas base
+    // viewer.imageryLayers.removeAll(); 
+    // Añadir OpenStreetMap como capa base
+    let noche = Cesium.ImageryLayer.fromProviderAsync(Cesium.IonImageryProvider.fromAssetId(3812));
+    baseLayer.push(noche);
+
+    const osm = new Cesium.OpenStreetMapImageryProvider({
+        url : 'https://tile.openstreetmap.org/'
+    })
+    baseLayer.push(osm); // Añade la capa OSM a la lista de capas base
+
+
+    //hace la capa visible
+    // viewer.imageryLayers.addImageryProvider(osm); // Añade la capa OSM
+
+
+
+
     viewer.scene.globe.enableLighting = true;
     window.viewer.scene.skyAtmosphere.show = false;
+
+    const geocoder = viewer.geocoder.viewModel;
+    geocoder.searchText = "Pamplona,Navarra";
+    geocoder.search(); // Esto hace que el globo vuele a la ciudad
 
     // Enable rendering the sky
 

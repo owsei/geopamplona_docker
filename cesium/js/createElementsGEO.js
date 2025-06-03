@@ -414,6 +414,25 @@ function crearPunto(datosPunto) {
   }
 
 
+  function cagarBaeLayers(){
+
+    //borrado de capas base
+    // viewer.imageryLayers.removeAll(); 
+    // Añadir OpenStreetMap como capa base
+    let noche = Cesium.ImageryLayer.fromProviderAsync(Cesium.IonImageryProvider.fromAssetId(3812));
+    baseLayer.push(noche);
+
+    const osm = new Cesium.OpenStreetMapImageryProvider({
+        url : 'https://tile.openstreetmap.org/'
+    })
+    baseLayer.push(osm); // Añade la capa OSM a la lista de capas base
+
+
+    //hace la capa visible
+    // viewer.imageryLayers.addImageryProvider(osm); // Añade la capa OSM
+
+  };
+
   // dbStatus();
   getLayersNames();
-  getLayersGeoServer();
+  // getLayersGeoServer();
