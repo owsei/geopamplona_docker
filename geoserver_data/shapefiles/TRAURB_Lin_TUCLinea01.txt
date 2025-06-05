@@ -1,0 +1,9 @@
+Transporte Urbano Comarcal. Recorrido de la Línea 1 (diurno):
+	 Atributo: FEATURE - Descripción: Identificador de feature (objeto geográfico) en el modelo de datos SITNA
+	 Atributo: IDLINEABUS - Descripción: Código de la línea de autobús (transporte urbano comarcal)
+	 Atributo: LINEABUS - Descripción: Nombre de la línea de autobús
+	 Atributo: IDITINERA - Descripción: Código de itinerario
+	 Atributo: ITINERA - Descripción: Nombre de un itinerario
+	 Atributo: LONGITUD - Descripción: Medida de un elemento o longitud expresada en grados centesimales
+	 Atributo: GEOM_LONG - Descripción: Longitud del objeto geográfico en metros (valor calculado de la geometría)
+	 Atributo: BEGINLIFE - Descripción: Fecha de inserción del dato en la base de datos SITNA

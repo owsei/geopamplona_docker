@@ -31,7 +31,11 @@ def get_geojson_from_table(table_name: str) -> Optional[dict]:
     
 # Endpoint para obtener tablas de la base de datos
 def get_tables_geopamplona() -> Optional[list]:
-    query="SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_type = 'BASE TABLE'"
+    query= f"""SELECT table_name 
+               FROM information_schema.tables 
+               WHERE table_schema = 'public' 
+                 AND table_type = 'BASE TABLE'
+               order by table_name;"""
     print(query)
     result = dbQuerys.selectAll(query)
     return result

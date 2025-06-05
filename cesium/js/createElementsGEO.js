@@ -23,15 +23,17 @@ function crearPunto(datosPunto) {
     console.log('Coordenadas:', coordenadas);
     console.log('Lat:', lat, 'Lon:', lon);
 
+    createPropertiesPanel(datosPunto.properties);
+
     viewer.entities.add({
-      
       position: Cesium.Cartesian3.fromDegrees(lon, lat, 0), // Altura 0 para el terreno
       name: datosPunto.properties.direccion || 'Sin dirección',
-      point: {
-        pixelSize: 8,
-        color: Cesium.Color.YELLOW,
+      description: createPropertiesPanel(datosPunto.properties),
+      point:{
+        pixelSize: 7,
+        color: Cesium.Color.RED.withAlpha(0.8),
         outlineColor: Cesium.Color.BLACK,
-        outlineWidth: 2,
+        outlineWidth: 1,
         heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND, // Úsalo si el punto está en terreno
         disableDepthTestDistance: Number.POSITIVE_INFINITY // Siempre visible encima del terreno
       }
@@ -40,7 +42,6 @@ function crearPunto(datosPunto) {
     if (datosPunto.properties.temperatura)
     {
       viewer.entities.add({
-        
         position: Cesium.Cartesian3.fromDegrees(lon, lat, 0),
         ellipsoid: {
           radii: new Cesium.Cartesian3(500.0, 500.0, 500),
@@ -50,8 +51,6 @@ function crearPunto(datosPunto) {
         }        
       });
     }
-    
-
   }
 
 
@@ -63,6 +62,7 @@ function crearPunto(datosPunto) {
     });
 
     viewer.entities.add({
+      description: createPropertiesPanel(datosPoligono.properties),
       polygon: {
         hierarchy: posiciones,
         material: Cesium.Color.RED.withAlpha(0.5),
@@ -80,6 +80,7 @@ function crearPunto(datosPunto) {
     });
 
     viewer.entities.add({
+      description: createPropertiesPanel(datosLinea.properties),
       polyline: {
         positions: posiciones,
         material: Cesium.Color.BLUE,
@@ -109,10 +110,10 @@ function crearPunto(datosPunto) {
 
     viewer.entities.add({
       // position : Cesium.Cartesian3.fromDegrees(datosMultipoligono.geometry.coordinates[0][0],0),
+      description: createPropertiesPanel(datosMultipoligono.properties),
       polygon: {
         hierarchy: posiciones,
-        material: Cesium.Color.GREEN.withAlpha(0.5),
-
+        material: Cesium.Color.BLUE.withAlpha(0.5),
         // outline: true,
         // outlineColor: Cesium.Color.BLACK
       }
@@ -127,11 +128,12 @@ function crearPunto(datosPunto) {
     });
 
     viewer.entities.add({ 
-       corridor: {
-          positions: posiciones,
-          width: 10.0,
-          material: Cesium.Color.BLUE.withAlpha(0.5),
-          clampToGround: true
+      description: createPropertiesPanel(datosMultilinea.properties),
+      corridor: {
+        positions: posiciones,
+        width: 10.0,
+        material: Cesium.Color.BLUE.withAlpha(0.5),
+        clampToGround: true
       }
     });
   }
@@ -160,12 +162,6 @@ function crearPunto(datosPunto) {
       destination: Cesium.Cartesian3.fromDegrees(-1.6456,42.8125, 7000),
     });
       
-    // const dataSource = await Cesium.GeoJsonDataSource.load('datos/prueba.geojson', {
-    //   clampToGround: true
-    // });
-    const utm30n = "+proj=utm +zone=30 +datum=WGS84 +units=m +no_defs";
-    const wgs84 = proj4.WGS84;
-    
     var dataSource;
     fetch(ruta)
       .then(response => response.json())
@@ -212,35 +208,31 @@ function crearPunto(datosPunto) {
         console.log('finalizado');
         return dataSource[0].features[0].properties.feature
       })
-      .catch(error => console.error("Error al leer el GeoJSON:", error));
-    }//FIN cargarGeoJSON 
-
+      .catch(error => 
+        console.error("Error al leer el GeoJSON:", error)
+      );
+  }//FIN cargarGeoJSON 
+  
     
   function limpiarEntidades() {
     // Limpiar todas las entidades del visor
     viewer.entities.removeAll();
-    
   }
 
   function puntoPamplona() {
     viewer.camera.flyTo({
         destination: Cesium.Cartesian3.fromDegrees(-1.6756,42.7415, 7000),
         orientation: {
-            heading: Cesium.Math.toRadians(10.0),
+            heading: Cesium.Math.toRadians(10.0),  
             pitch: Cesium.Math.toRadians(-40.0),
             roll: 0.0
         }
       });
   }
 
-  function volarA(lon,lat) {
+  function volarA(lon,lat,alt=7000) {
     viewer.camera.flyTo({
-        destination: Cesium.Cartesian3.fromDegrees(lon,lat, 7000),
-      //   orientation: {
-      //       heading: Cesium.Math.toRadians(10.0),
-      //       pitch: Cesium.Math.toRadians(-40.0),
-      //       roll: 0.0
-      //   }
+        destination: Cesium.Cartesian3.fromDegrees(lon,lat, alt),
       });
   }
 
@@ -432,6 +424,15 @@ function crearPunto(datosPunto) {
     // viewer.imageryLayers.addImageryProvider(osm); // Añade la capa OSM
 
   };
+
+
+  function createPropertiesPanel(properties) {
+    let descrip = '';
+    for (const [key, value] of Object.entries(properties)) {
+      descrip = descrip + `<p>${key}: ${value}</p>`;
+    }
+    return descrip;
+  }
 
   // dbStatus();
   getLayersNames();
